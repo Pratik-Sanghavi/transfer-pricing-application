@@ -52,6 +52,53 @@ def group_graph(repo: Neo4jRepository = Depends(repository)):
         repo.close()
 
 
+@app.get("/api/v1/client-data")
+def client_data(repo: Neo4jRepository = Depends(repository)):
+    """Return the dashboard dataset from Neo4j in the shape consumed by the web UI."""
+    try:
+        entities = repo.query("MATCH (e:LegalEntity) RETURN e {.*} AS entity ORDER BY e.entity_id")
+        financials = repo.query("""
+            MATCH (:LegalEntity)-[:REPORTED_RESULT]->(f:FinancialResult)
+            RETURN f {.*} AS financial
+            ORDER BY financial.entity_id, financial.fiscal_year
+        """)
+        transactions = repo.query("""
+            MATCH (provider:LegalEntity)-[t:INTERCOMPANY_TRANSACTION]->(recipient:LegalEntity)
+            RETURN {txn_id:t.txn_id, fiscal_year:t.fiscal_year, provider_entity:provider.entity_id,
+                    recipient_entity:recipient.entity_id, transaction_type:t.transaction_type,
+                    description:t.description, amount_local:t.amount_local, currency:t.currency,
+                    amount_usd:t.amount_usd, pricing_policy:t.pricing_policy,
+                    written_agreement:CASE WHEN t.written_agreement THEN 'Y' ELSE 'N' END,
+                    agreement_date:toString(t.agreement_date), first_year:t.first_year, notes:t.notes} AS transaction
+            ORDER BY transaction.fiscal_year, transaction.txn_id
+        """)
+        rules = repo.query("MATCH (r:TPRule) RETURN r {.*} AS rule ORDER BY r.rule_id")
+        comparable_rows = repo.query("""
+            MATCH (c:Comparable)-[:HAS_FINANCIAL]->(f:ComparableFinancial)
+            RETURN c.segment AS segment, c.comp_id AS comp_id, c.company_name AS company_name,
+                   c.country AS country, c.business_description AS business_description,
+                   c.largest_shareholder_pct AS largest_shareholder_pct, f.fiscal_year AS fiscal_year,
+                   f.revenue_musd AS revenue_musd, f.operating_profit_musd AS operating_profit_musd,
+                   f.total_costs_musd AS total_costs_musd
+            ORDER BY segment, comp_id, fiscal_year
+        """)
+        comparable_sets = {"services": [], "distributor": []}
+        for row in comparable_rows:
+            comparable_sets[row.pop("segment")].append(row)
+        tp_rules = [row["rule"] for row in rules]
+        return {
+            "entities": [row["entity"] for row in entities],
+            "financials": [row["financial"] for row in financials],
+            "ic_transactions": [row["transaction"] for row in transactions],
+            "tp_rules": tp_rules,
+            "rulesMeta": {rule["rule_id"]: rule for rule in tp_rules},
+            "comparables_services": comparable_sets["services"],
+            "comparables_distributors": comparable_sets["distributor"],
+            "sampleTranscript": "",
+        }
+    finally:
+        repo.close()
+
 @app.get("/api/v1/triggers")
 def triggers(repo: Neo4jRepository = Depends(repository)):
     try:

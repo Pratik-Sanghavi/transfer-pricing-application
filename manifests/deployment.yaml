@@ -18,8 +18,11 @@ spec:
     spec:
       containers:
         - name: web
-          image: kind-registry:5000/transfer-pricing/web:0.1.0
+          image: kind-registry:5000/transfer-pricing/web:0.1.1
           imagePullPolicy: Always
+          env:
+            - name: BACKEND_URL
+              value: http://tp-copilot-backend.transfer-pricing.svc.cluster.local:8000
           ports:
             - name: http
               containerPort: 3000

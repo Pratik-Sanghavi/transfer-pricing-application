@@ -61,7 +61,7 @@ export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }
           <h3 style={{ marginTop: 0 }}>2 · Client interview (PLAUD transcript)</h3>
           <div className="row" style={{ marginBottom: 8 }}>
             <input type="file" accept=".txt,.md" onChange={onFile} />
-            <button className="btn" onClick={() => setTranscripts({ ...transcripts, [eid]: data.sampleTranscript })}>Load sample (Germany CFO)</button>
+            {data.sampleTranscript && <button className="btn" onClick={() => setTranscripts({ ...transcripts, [eid]: data.sampleTranscript })}>Load sample (Germany CFO)</button>}
           </div>
           <textarea rows={11} value={transcript} placeholder="Paste or upload the interview transcript…"
                     onChange={(e) => setTranscripts({ ...transcripts, [eid]: e.target.value })} />
