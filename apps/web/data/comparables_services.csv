@@ -1,0 +1,37 @@
+comp_id,company_name,country,business_description,largest_shareholder_pct,fiscal_year,revenue_musd,cogs_musd,opex_musd,operating_profit_musd,total_costs_musd,receivables_musd,inventory_musd,payables_musd
+S01,Kaveri Softech Ltd,India,Independent provider of offshore software development and testing services,22,2023,179.79,116.72,38.91,24.16,155.63,30.56,0.0,16.34
+S01,Kaveri Softech Ltd,India,Independent provider of offshore software development and testing services,22,2024,192.36,124.94,41.65,25.78,166.59,32.7,0.0,17.49
+S01,Kaveri Softech Ltd,India,Independent provider of offshore software development and testing services,22,2025,192.48,124.82,41.61,26.05,166.43,32.72,0.0,17.48
+S02,Deccan Code Solutions Pvt Ltd,India,Software engineering and QA services for global clients,18,2023,97.17,64.23,21.41,11.53,85.64,16.52,0.0,8.99
+S02,Deccan Code Solutions Pvt Ltd,India,Software engineering and QA services for global clients,18,2024,99.22,65.52,21.84,11.86,87.35,16.87,0.0,9.17
+S02,Deccan Code Solutions Pvt Ltd,India,Software engineering and QA services for global clients,18,2025,104.82,69.06,23.02,12.74,92.08,17.82,0.0,9.67
+S03,Narmada Digital Services Ltd,India,Application development and maintenance services,25,2023,50.65,31.89,10.63,8.14,42.52,8.61,0.0,4.46
+S03,Narmada Digital Services Ltd,India,Application development and maintenance services,25,2024,50.19,31.71,10.57,7.91,42.28,8.53,0.0,4.44
+S03,Narmada Digital Services Ltd,India,Application development and maintenance services,25,2025,53.44,33.73,11.24,8.47,44.97,9.08,0.0,4.72
+S04,Coromandel IT Services Ltd,India,IT outsourcing and engineering services,12,2023,86.57,53.4,17.8,15.37,71.2,14.72,0.0,7.48
+S04,Coromandel IT Services Ltd,India,IT outsourcing and engineering services,12,2024,88.19,54.67,18.22,15.29,72.9,14.99,0.0,7.65
+S04,Coromandel IT Services Ltd,India,IT outsourcing and engineering services,12,2025,89.58,55.74,18.58,15.25,74.32,15.23,0.0,7.8
+S05,Sahyadri Engineering Tech Ltd,India,Product engineering services; embedded software,19,2023,160.27,102.39,34.13,23.75,136.53,27.25,0.0,14.34
+S05,Sahyadri Engineering Tech Ltd,India,Product engineering services; embedded software,19,2024,166.87,107.49,35.83,23.55,143.33,28.37,0.0,15.05
+S05,Sahyadri Engineering Tech Ltd,India,Product engineering services; embedded software,19,2025,186.17,119.3,39.77,27.1,159.07,31.65,0.0,16.7
+S06,Vindhya Infotech Ltd,India,Software development services; owns and licenses a proprietary ERP product (55% of revenue),30,2023,93.1,52.33,17.44,23.33,69.77,15.83,0.0,7.33
+S06,Vindhya Infotech Ltd,India,Software development services; owns and licenses a proprietary ERP product (55% of revenue),30,2024,97.63,54.41,18.14,25.08,72.55,16.6,0.0,7.62
+S06,Vindhya Infotech Ltd,India,Software development services; owns and licenses a proprietary ERP product (55% of revenue),30,2025,105.02,58.68,19.56,26.78,78.24,17.85,0.0,8.21
+S07,Malabar Testing Labs Pvt Ltd,India,Independent software testing and QA outsourcing,15,2023,132.57,88.3,29.43,14.84,117.74,22.54,0.0,12.36
+S07,Malabar Testing Labs Pvt Ltd,India,Independent software testing and QA outsourcing,15,2024,143.76,95.38,31.79,16.58,127.18,24.44,0.0,13.35
+S07,Malabar Testing Labs Pvt Ltd,India,Independent software testing and QA outsourcing,15,2025,150.69,100.2,33.4,17.09,133.6,25.62,0.0,14.03
+S08,Ganga Global Tech Ltd,India,Captive-style development center; 80% owned by US parent,80,2023,123.29,82.14,27.38,13.78,109.51,20.96,0.0,11.5
+S08,Ganga Global Tech Ltd,India,Captive-style development center; 80% owned by US parent,80,2024,129.87,86.68,28.89,14.29,115.58,22.08,0.0,12.14
+S08,Ganga Global Tech Ltd,India,Captive-style development center; 80% owned by US parent,80,2025,135.69,90.63,30.21,14.85,120.85,23.07,0.0,12.69
+S09,Aravalli Systems Ltd,India,Custom software development for BFSI and industrial clients,21,2023,121.8,77.53,25.84,18.43,103.37,20.71,0.0,10.85
+S09,Aravalli Systems Ltd,India,Custom software development for BFSI and industrial clients,21,2024,122.9,78.49,26.16,18.24,104.65,20.89,0.0,10.99
+S09,Aravalli Systems Ltd,India,Custom software development for BFSI and industrial clients,21,2025,131.43,83.74,27.91,19.77,111.65,22.34,0.0,11.72
+S10,Konkan Data Services Ltd,India,BPO and call-center services,17,2023,299.87,202.73,67.58,29.56,270.31,50.98,0.0,28.38
+S10,Konkan Data Services Ltd,India,BPO and call-center services,17,2024,314.39,211.31,70.44,32.64,281.75,53.45,0.0,29.58
+S10,Konkan Data Services Ltd,India,BPO and call-center services,17,2025,329.82,223.18,74.39,32.25,297.57,56.07,0.0,31.25
+S11,Nilgiri Code Works Pvt Ltd,India,Software development services; persistent losses in last 3 years,24,2023,116.76,91.42,30.47,-5.14,121.89,19.85,0.0,12.8
+S11,Nilgiri Code Works Pvt Ltd,India,Software development services; persistent losses in last 3 years,24,2024,122.37,94.13,31.38,-3.14,125.51,20.8,0.0,13.18
+S11,Nilgiri Code Works Pvt Ltd,India,Software development services; persistent losses in last 3 years,24,2025,135.51,103.32,34.44,-2.26,137.76,23.04,0.0,14.47
+S12,Tapti Engineering Software Ltd,India,IoT and embedded software development services,13,2023,215.21,139.31,46.44,29.46,185.75,36.59,0.0,19.5
+S12,Tapti Engineering Software Ltd,India,IoT and embedded software development services,13,2024,215.83,139.91,46.64,29.27,186.55,36.69,0.0,19.59
+S12,Tapti Engineering Software Ltd,India,IoT and embedded software development services,13,2025,241.54,156.38,52.13,33.03,208.51,41.06,0.0,21.89

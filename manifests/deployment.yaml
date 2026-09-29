@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp-copilot
+  labels: { app: tp-copilot }
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: tp-copilot }
+  template:
+    metadata:
+      labels: { app: tp-copilot }
+    spec:
+      containers:
+        - name: tp-copilot
+          image: tp-web:latest   # replace with <registry>/tp-web:latest
+          ports: [{ containerPort: 3000 }]
+          envFrom:
+            - configMapRef: { name: tp-copilot-config }
+            - secretRef: { name: tp-copilot-secrets, optional: true }  # holds OPENROUTER_API_KEY; app runs in demo mode without it
+          readinessProbe:
+            httpGet: { path: /, port: 3000 }
+            initialDelaySeconds: 5
+          resources:
+            requests: { cpu: 100m, memory: 256Mi }
+            limits: { memory: 512Mi }

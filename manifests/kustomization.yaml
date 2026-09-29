@@ -1,3 +1,8 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources: []
+resources:
+  - configmap.yaml
+  - deployment.yaml
+  - service.yaml
+# Secret is NOT committed. Create it once per cluster:
+#   kubectl create secret generic tp-copilot-secrets --from-literal=OPENROUTER_API_KEY=sk-or-...
