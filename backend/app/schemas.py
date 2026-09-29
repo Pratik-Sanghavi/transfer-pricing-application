@@ -1,3 +1,4 @@
+from typing import Any
 from pydantic import BaseModel, Field
 
 
@@ -20,3 +21,18 @@ class ReportRequest(BaseModel):
     entity_id: str
     benchmark_segment: str = Field(pattern="^(distributor|services)$")
     reviewer: str = "consultant"
+
+
+class FarAIRequest(BaseModel):
+    transcript: str = ""
+    entity: dict[str, Any]
+
+
+class ScreenAIRequest(BaseModel):
+    comps: list[dict[str, Any]]
+    tested: dict[str, Any]
+    far: dict[str, Any] | None = None
+
+
+class ReportAIRequest(BaseModel):
+    ctx: dict[str, Any]

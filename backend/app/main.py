@@ -5,7 +5,8 @@ from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import Settings, get_settings
 from app.database import Neo4jRepository
-from app.schemas import BenchmarkRequest, FarUpdate, ReportRequest
+from app.schemas import BenchmarkRequest, FarAIRequest, FarUpdate, ReportAIRequest, ReportRequest, ScreenAIRequest
+from app.services.openrouter import far as ai_far, report as ai_report, screen as ai_screen
 from app.services.benchmark import calculate_range
 
 
@@ -51,6 +52,25 @@ def group_graph(repo: Neo4jRepository = Depends(repository)):
     finally:
         repo.close()
 
+
+@app.get("/api/v1/ai/status")
+def ai_status(settings: Settings = Depends(get_settings)):
+    return {"live": bool(settings.openrouter_api_key), "fast": settings.openrouter_model_fast, "strong": settings.openrouter_model_strong}
+
+
+@app.post("/api/v1/ai/far")
+def generate_far(request: FarAIRequest, settings: Settings = Depends(get_settings)):
+    return ai_far(settings, request.transcript, request.entity)
+
+
+@app.post("/api/v1/ai/screen")
+def screen_comparables(request: ScreenAIRequest, settings: Settings = Depends(get_settings)):
+    return ai_screen(settings, request.comps, request.tested, request.far)
+
+
+@app.post("/api/v1/ai/report")
+def generate_report(request: ReportAIRequest, settings: Settings = Depends(get_settings)):
+    return ai_report(settings, request.ctx)
 
 @app.get("/api/v1/client-data")
 def client_data(repo: Neo4jRepository = Depends(repository)):

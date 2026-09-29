@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     neo4j_username: str = "neo4j"
     neo4j_password: str = ""
     cors_origins: str = "http://localhost:3000,http://localhost:8501"
+    openrouter_api_key: str = ""
+    openrouter_model_fast: str = "openai/gpt-4o-mini"
+    openrouter_model_strong: str = "anthropic/claude-sonnet-4.5"
 
     @property
     def cors_origin_list(self) -> list[str]:

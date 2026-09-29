@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: kind-registry:5000/transfer-pricing/web:0.1.1
+          image: kind-registry:5000/transfer-pricing/web:0.1.2
           imagePullPolicy: Always
           env:
             - name: BACKEND_URL
@@ -26,12 +26,6 @@ spec:
           ports:
             - name: http
               containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: tp-copilot-config
-            - secretRef:
-                name: tp-copilot-secrets
-                optional: true
           readinessProbe:
             httpGet:
               path: /

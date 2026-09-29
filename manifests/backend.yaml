@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: kind-registry:5000/transfer-pricing/backend:0.1.1
+          image: kind-registry:5000/transfer-pricing/backend:0.1.2
           imagePullPolicy: Always
           ports:
             - name: http
@@ -32,6 +32,12 @@ spec:
               value: "false"
             - name: CORS_ORIGINS
               value: http://localhost:3000,http://localhost:8501
+          envFrom:
+            - configMapRef:
+                name: tp-copilot-config
+            - secretRef:
+                name: tp-copilot-secrets
+                optional: true
           readinessProbe:
             httpGet:
               path: /health

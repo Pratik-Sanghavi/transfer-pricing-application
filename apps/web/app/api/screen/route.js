@@ -1,5 +1,5 @@
-import { screenComps } from "@/lib/llm";
-export async function POST(req) {
-  const { comps, tested, far } = await req.json();
-  return Response.json(await screenComps(comps, tested, far));
+import { backendPost } from "@/lib/backend";
+
+export async function POST(request) {
+  return backendPost("/api/v1/ai/screen", await request.json());
 }

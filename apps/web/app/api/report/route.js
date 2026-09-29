@@ -1,6 +1,5 @@
-import { draftReport, mockFar } from "@/lib/llm";
-export async function POST(req) {
-  const { ctx } = await req.json();
-  ctx.far ||= mockFar(ctx.entity);
-  return Response.json(await draftReport(ctx));
+import { backendPost } from "@/lib/backend";
+
+export async function POST(request) {
+  return backendPost("/api/v1/ai/report", await request.json());
 }
