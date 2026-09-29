@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp-copilot
+  labels:
+    app: tp-copilot
+    app.kubernetes.io/part-of: transfer-pricing-copilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tp-copilot
+  template:
+    metadata:
+      labels:
+        app: tp-copilot
+        app.kubernetes.io/part-of: transfer-pricing-copilot
+    spec:
+      containers:
+        - name: web
+          image: kind-registry:5000/transfer-pricing/web:0.1.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: tp-copilot-config
+            - secretRef:
+                name: tp-copilot-secrets
+                optional: true
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi

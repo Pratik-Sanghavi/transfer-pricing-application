@@ -1,0 +1,24 @@
+txn_id,fiscal_year,provider_entity,recipient_entity,transaction_type,description,amount_local,currency,amount_usd,pricing_policy,written_agreement,agreement_date,first_year,notes
+T001,2023,E02,E01,Services - software development,Captive software development & testing,3609620000,INR,43700000,Cost plus 15%,Y,2019-04-01,2019,
+T002,2023,E03,E01,Services - low value-adding,Procurement & supply chain coordination,2835000,CHF,3150000,Cost plus 5%,Y,2020-01-01,2020,
+T003,2023,E03,E04,Services - low value-adding,Procurement & supply chain coordination,1701000,CHF,1890000,Cost plus 5%,Y,2020-01-01,2020,
+T004,2023,E03,E05,Services - low value-adding,Procurement & supply chain coordination,1134000,CHF,1260000,Cost plus 5%,Y,2020-01-01,2020,
+T005,2023,E04,E01,Services - contract manufacturing,Assembly of sensor modules (maquila),2264160000,MXN,127200000,Cost plus 6.5%,Y,2018-06-01,2018,
+T006,2023,E01,E05,Tangible goods - finished products,Sale of finished sensors for EMEA resale,176400000,USD,176400000,"Resale minus, target OM 2-4%",Y,2017-01-01,2017,
+T007,2024,E02,E01,Services - software development,Captive software development & testing,4007556000,INR,47880000,Cost plus 15%,Y,2019-04-01,2019,
+T008,2024,E03,E01,Services - low value-adding,Procurement & supply chain coordination,2910600,CHF,3307500,Cost plus 5%,Y,2020-01-01,2020,
+T009,2024,E03,E04,Services - low value-adding,Procurement & supply chain coordination,1746360,CHF,1984500,Cost plus 5%,Y,2020-01-01,2020,
+T010,2024,E03,E05,Services - low value-adding,Procurement & supply chain coordination,1164240,CHF,1323000,Cost plus 5%,Y,2020-01-01,2020,
+T011,2024,E04,E01,Services - contract manufacturing,Assembly of sensor modules (maquila),2553124500,MXN,139515000,Cost plus 6.5%,Y,2018-06-01,2018,
+T012,2024,E01,E05,Tangible goods - finished products,Sale of finished sensors for EMEA resale,191520000,USD,191520000,"Resale minus, target OM 2-4%",Y,2017-01-01,2017,
+T013,2024,E01,E04,Financial - intercompany loan interest,Interest on USD 25M term loan (fixed 2.0%),500000,USD,500000,Fixed 2.0% p.a.,Y,2024-01-15,2024,"Principal USD 25,000,000; 5-year bullet; unsecured"
+T014,2024,E01,E02,Services - management fee,Group management & IT support charge,900000,USD,900000,Allocated cost plus 5%,N,,2024,No benefit-test evidence on file
+T015,2025,E02,E01,Services - software development,Captive software development & testing,4425990000,INR,51465000,Cost plus 15%,Y,2019-04-01,2019,
+T016,2025,E03,E01,Services - low value-adding,Procurement & supply chain coordination,2945250,CHF,3465000,Cost plus 5%,Y,2020-01-01,2020,
+T017,2025,E03,E04,Services - low value-adding,Procurement & supply chain coordination,1767150,CHF,2079000,Cost plus 5%,Y,2020-01-01,2020,
+T018,2025,E03,E05,Services - low value-adding,Procurement & supply chain coordination,1178100,CHF,1386000,Cost plus 5%,Y,2020-01-01,2020,
+T019,2025,E04,E01,Services - contract manufacturing,Assembly of sensor modules (maquila),2805540000,MXN,147660000,Cost plus 6.5%,Y,2018-06-01,2018,
+T020,2025,E01,E05,Tangible goods - finished products,Sale of finished sensors for EMEA resale,198240000,USD,198240000,"Resale minus, target OM 2-4%",Y,2017-01-01,2017,
+T021,2025,E01,E04,Financial - intercompany loan interest,Interest on USD 25M term loan (fixed 2.0%),500000,USD,500000,Fixed 2.0% p.a.,Y,2024-01-15,2024,"Principal USD 25,000,000; 5-year bullet; unsecured"
+T022,2025,E01,E02,Services - management fee,Group management & IT support charge,900000,USD,900000,Allocated cost plus 5%,N,,2024,No benefit-test evidence on file
+T023,2025,E01,E05,Intangibles - royalty,"Trademark & technology licence, 3% of net sales",7080000,USD,7080000,3% of net sales,N,,2025,New in FY2025; no signed licence agreement

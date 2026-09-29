@@ -1,0 +1,37 @@
+comp_id,company_name,country,business_description,largest_shareholder_pct,fiscal_year,revenue_musd,cogs_musd,opex_musd,operating_profit_musd,total_costs_musd,receivables_musd,inventory_musd,payables_musd
+D01,Rheinfeld Elektronik Handel GmbH,Germany,Independent B2B distributor of industrial sensors and measurement devices; no manufacturing or R&D,12,2023,152.21,122.43,24.94,4.84,147.36,25.88,18.26,17.14
+D01,Rheinfeld Elektronik Handel GmbH,Germany,Independent B2B distributor of industrial sensors and measurement devices; no manufacturing or R&D,12,2024,164.88,132.48,27.72,4.68,160.2,28.03,19.79,18.55
+D01,Rheinfeld Elektronik Handel GmbH,Germany,Independent B2B distributor of industrial sensors and measurement devices; no manufacturing or R&D,12,2025,172.34,142.36,25.77,4.21,168.13,29.3,20.68,19.93
+D02,Nordlicht Components AB,Sweden,Wholesale distribution of electronic components to industrial OEMs,8,2023,63.01,53.54,8.02,1.46,61.56,10.71,7.56,7.5
+D02,Nordlicht Components AB,Sweden,Wholesale distribution of electronic components to industrial OEMs,8,2024,66.35,55.57,9.4,1.37,64.97,11.28,7.96,7.78
+D02,Nordlicht Components AB,Sweden,Wholesale distribution of electronic components to industrial OEMs,8,2025,74.23,61.15,11.23,1.85,72.38,12.62,8.91,8.56
+D03,Alpina Messtechnik Vertrieb AG,Austria,Distributor of process instrumentation; technical pre-sales support,15,2023,377.25,308.36,53.69,15.2,362.05,64.13,45.27,43.17
+D03,Alpina Messtechnik Vertrieb AG,Austria,Distributor of process instrumentation; technical pre-sales support,15,2024,399.33,326.85,59.93,12.54,386.78,67.89,47.92,45.76
+D03,Alpina Messtechnik Vertrieb AG,Austria,Distributor of process instrumentation; technical pre-sales support,15,2025,441.49,368.6,58.69,14.2,427.28,75.05,52.98,51.6
+D04,Brabant Industrial Supply BV,Netherlands,B2B distributor of automation and sensor products across Benelux,10,2023,267.25,214.81,46.68,5.77,261.49,45.43,32.07,30.07
+D04,Brabant Industrial Supply BV,Netherlands,B2B distributor of automation and sensor products across Benelux,10,2024,273.52,229.98,38.76,4.78,268.74,46.5,32.82,32.2
+D04,Brabant Industrial Supply BV,Netherlands,B2B distributor of automation and sensor products across Benelux,10,2025,295.29,246.61,43.14,5.54,289.75,50.2,35.43,34.52
+D05,Loire Instrumentation SAS,France,Distributes test & measurement equipment to industrial customers,18,2023,199.89,168.3,22.69,8.9,190.99,33.98,23.99,23.56
+D05,Loire Instrumentation SAS,France,Distributes test & measurement equipment to industrial customers,18,2024,208.94,173.73,26.45,8.75,200.18,35.52,25.07,24.32
+D05,Loire Instrumentation SAS,France,Distributes test & measurement equipment to industrial customers,18,2025,230.17,188.11,31.99,10.07,220.1,39.13,27.62,26.34
+D06,Castellan Tech Distribuzione SpA,Italy,Wholesale of industrial electronics and IoT modules,9,2023,380.86,321.99,48.58,10.29,370.57,64.75,45.7,45.08
+D06,Castellan Tech Distribuzione SpA,Italy,Wholesale of industrial electronics and IoT modules,9,2024,401.02,321.76,68.09,11.18,389.85,68.17,48.12,45.05
+D06,Castellan Tech Distribuzione SpA,Italy,Wholesale of industrial electronics and IoT modules,9,2025,437.96,365.43,58.88,13.65,424.31,74.45,52.56,51.16
+D07,Vistula Automatyka Sp. z o.o.,Poland,Independent distributor of industrial automation components,14,2023,349.88,292.38,45.13,12.37,337.51,59.48,41.99,40.93
+D07,Vistula Automatyka Sp. z o.o.,Poland,Independent distributor of industrial automation components,14,2024,375.31,319.17,43.96,12.19,363.13,63.8,45.04,44.68
+D07,Vistula Automatyka Sp. z o.o.,Poland,Independent distributor of industrial automation components,14,2025,404.59,339.79,51.57,13.23,391.36,68.78,48.55,47.57
+D08,Hanse Sensorik Handel GmbH,Germany,Distributor of sensors; also designs and patents proprietary sensor products (approx. 40% of sales),11,2023,62.84,54.01,4.63,4.2,58.64,10.68,7.54,7.56
+D08,Hanse Sensorik Handel GmbH,Germany,Distributor of sensors; also designs and patents proprietary sensor products (approx. 40% of sales),11,2024,66.61,54.83,7.62,4.16,62.45,11.32,7.99,7.68
+D08,Hanse Sensorik Handel GmbH,Germany,Distributor of sensors; also designs and patents proprietary sensor products (approx. 40% of sales),11,2025,68.94,57.06,7.79,4.09,64.86,11.72,8.27,7.99
+D09,Iberia Control Systems SL,Spain,Distributor of control systems; subsidiary of a listed industrial group,72,2023,97.42,82.43,12.88,2.11,95.3,16.56,11.69,11.54
+D09,Iberia Control Systems SL,Spain,Distributor of control systems; subsidiary of a listed industrial group,72,2024,102.39,84.32,15.62,2.45,99.94,17.41,12.29,11.8
+D09,Iberia Control Systems SL,Spain,Distributor of control systems; subsidiary of a listed industrial group,72,2025,113.83,94.13,17.2,2.5,111.33,19.35,13.66,13.18
+D10,Thames Gadget Retail Ltd,United Kingdom,Consumer electronics retail chain with online store,6,2023,245.09,208.78,24.34,11.97,233.12,41.67,29.41,29.23
+D10,Thames Gadget Retail Ltd,United Kingdom,Consumer electronics retail chain with online store,6,2024,245.26,201.49,32.99,10.79,234.47,41.69,29.43,28.21
+D10,Thames Gadget Retail Ltd,United Kingdom,Consumer electronics retail chain with online store,6,2025,269.62,218.14,37.87,13.61,256.0,45.84,32.35,30.54
+D11,Danubia Industrial Trade Kft,Hungary,Industrial components distributor; restructuring after repeated losses,20,2023,101.22,83.92,21.42,-4.12,105.34,17.21,12.15,11.75
+D11,Danubia Industrial Trade Kft,Hungary,Industrial components distributor; restructuring after repeated losses,20,2024,109.38,87.53,26.17,-4.32,113.7,18.6,13.13,12.25
+D11,Danubia Industrial Trade Kft,Hungary,Industrial components distributor; restructuring after repeated losses,20,2025,113.04,94.28,22.75,-3.98,117.03,19.22,13.57,13.2
+D12,Aarhus Proces Udstyr A/S,Denmark,Distributor of process and flow measurement equipment,16,2023,388.95,325.58,53.19,10.19,378.77,66.12,46.67,45.58
+D12,Aarhus Proces Udstyr A/S,Denmark,Distributor of process and flow measurement equipment,16,2024,407.94,348.37,51.15,8.42,399.52,69.35,48.95,48.77
+D12,Aarhus Proces Udstyr A/S,Denmark,Distributor of process and flow measurement equipment,16,2025,430.87,365.32,52.41,13.14,417.73,73.25,51.7,51.14
