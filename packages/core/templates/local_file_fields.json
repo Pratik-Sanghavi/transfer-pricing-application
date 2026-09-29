@@ -1,0 +1,79 @@
+{
+  "template": "local_file_template.md",
+  "engine": "Handlebars. Register helpers: pct(x) -> '12.6%', pct2(x) -> '12.63%', money(x, ccy) -> 'EUR 9.5M' (millions, 1dp) , num(x) -> thousands separators, date(iso) -> '29 Sep 2026', upper(s).",
+  "fill_order": [
+    "1. Build the context from the case (Neo4j) and the rule engine: every data field below.",
+    "2. Call the strong model ONCE with the system prompt below, the full data context, and the ai_slots list; it returns JSON {slot_name: markdown_text}.",
+    "3. Validate: every slot present, within max_words, no numbers that are not in the data context (reject and retry once).",
+    "4. Render the template with {...data, ai: slots}. Log the fill as an AuditEvent."
+  ],
+
+  "system_prompt": "You are a senior transfer pricing consultant drafting sections of an OECD-style local file. You will receive (a) a JSON data context produced by a deterministic engine and approved by a consultant and (b) a list of narrative slots with instructions. Return ONLY a JSON object mapping each slot name to markdown text. Rules: use only facts and numbers present in the data context; never invent figures, dates, company names or legal references; quote percentages exactly as given; cite the reference string from the data when you state a legal requirement (e.g. '(OECD TPG Ch. III)'); where a reference contains 'verify', append '[to be verified]'; write in formal, audit-ready third person; if the data is insufficient for a statement, write '[Consultant to confirm: <what is missing>]' instead of guessing.",
+
+  "data_fields": {
+    "year": { "source": "CURRENT_YEAR", "example": 2025 },
+    "fiscal_year_end_label": { "source": "derived: entity.fiscal_year_end + year", "example": "31 December 2025" },
+    "prepared_by": { "source": "consultant who approved the FAR", "example": "S. (TP Consultant)" },
+    "status": { "source": "'Draft' until all approvals exist, then 'Final draft for review'" },
+    "generated_at": { "source": "now (ISO)" },
+
+    "entity.*": { "source": "LegalEntity node / entities.csv row for the tested party", "fields": ["entity_id", "entity_name", "country", "currency", "role", "ownership_pct", "headcount", "fiscal_year_end", "key_functions", "key_assets", "key_risks"] },
+    "group.name / parent_name / parent_country": { "source": "Case.client; LegalEntity with no parent", "example": "Novatek Group / Novatek Holdings Inc. / United States" },
+    "group.entities[]": { "source": "all LegalEntity nodes", "fields": ["entity_name", "country", "role"] },
+
+    "tested.transaction_summary": { "source": "derived: largest controlled transaction(s) involving the tested party in FY", "example": "Purchase of finished sensors from Novatek Holdings Inc. for resale in EMEA (USD 198.2M)" },
+    "transactions[]": { "source": "Transaction nodes where provider or recipient = tested party, FY = year", "fields": ["txn_id", "counterparty_name", "direction ('Purchase'|'Sale'|'Payment'|'Receipt')", "transaction_type", "amount_local", "amount_usd", "pricing_policy", "agreement_label ('Signed YYYY-MM-DD' | 'None on file')"] },
+
+    "far.*": { "source": "approved FARAssessment (approved_json) + audit event of approval", "fields": ["characterisation", "interviewee", "interview_date", "approved_by", "approved_at", "flags_for_human_review[]"] },
+    "far.functions_table[]": { "source": "derived from approved FAR functions", "fields": ["function", "tested_party (● ◐ —)", "counterparty (● ◐ —)", "note"] },
+    "far.risks_table[]": { "source": "derived from approved FAR risks", "fields": ["risk", "contractual", "control", "capacity", "conclusion"] },
+
+    "methods.{cup,rpm,cpm_cost_plus,tnmm,psm}.{applied,reason}": { "source": "method selection step; defaults below until the method engine exists", "defaults": {
+      "cup": ["No", "No reliable internal or external comparable uncontrolled prices for the same products and terms."],
+      "rpm": ["No", "Gross margin data for independent distributors is not reliably comparable due to accounting differences in cost classification."],
+      "cpm_cost_plus": ["No", "Gross mark-up data is not reliably comparable; net-level indicators are more robust."],
+      "tnmm": ["Yes", "Tested party is the least complex party; reliable net margin data is available for independent comparables."],
+      "psm": ["No", "Only one party makes unique and valuable contributions; the tested party performs routine functions."]
+    } },
+
+    "benchmark.*": { "source": "rules.benchmark(data, eid, acceptedIds)", "fields": ["method ('TNMM')", "method_us_equivalent ('Comparable Profits Method')", "pli_type ('OM'|'NCP')", "pli_type_long", "years_label ('FY2023 to FY2025')", "n", "lq", "median", "uq", "tested_pli", "current_pli", "outside", "conclusion_label ('Outside the arm's length range' | 'Within the arm's length range')", "pli_base_local", "adjustment_local", "adjustment_usd"] },
+
+    "search.*": { "source": "case configuration", "defaults": { "databases": "Curated comparable set (illustrative); production: licensed company database", "geography": "Pan-European (distributors) / India (services)", "industry_codes": "[Consultant to confirm]", "independence_criterion": "No shareholder above 25%" } },
+    "screening_funnel[]": { "source": "derived from screening decisions grouped by criterion", "fields": ["step", "criterion", "remaining"] },
+    "screening[]": { "source": "Case-[:SCREENED]->Comparable edges for the tested party", "fields": ["comp_id", "company_name", "ai_decision", "final_decision", "criterion", "reason"] },
+    "screening_overrides": { "source": "count of rows where final_decision != ai_decision" },
+    "accepted_comparables[]": { "source": "accepted rows joined to compSummary()", "fields": ["comp_id", "company_name", "country", "weighted_pli"] },
+    "tested_financials[]": { "source": "Financials nodes for the tested party, all years", "fields": ["fiscal_year", "revenue", "total_costs", "operating_profit", "pli"] },
+
+    "rules_applied[]": { "source": "Rule nodes applying to OECD + tested party's jurisdiction", "fields": ["rule_id", "jurisdiction", "trigger_name", "reference"] },
+    "triggers[]": { "source": "runAll() filtered to the tested party", "fields": ["severity", "rule_id", "detail", "action", "reference"] },
+    "audit[]": { "source": "AuditEvent nodes for the case", "fields": ["time", "step", "detail", "changed_label ('Yes'|'No')"] }
+  },
+
+  "ai_slots": {
+    "executive_summary": { "max_words": 150, "instruction": "Summarise the tested transaction, method, PLI, the tested party's weighted result versus the interquartile range, and the conclusion and adjustment. One paragraph." },
+    "scope_purpose": { "max_words": 100, "instruction": "State the purpose of the document (local file for the entity and fiscal year) and what it covers." },
+    "thresholds_and_deadlines": { "max_words": 120, "instruction": "Explain which documentation requirements apply to this entity based on the triggers (e.g. thresholds exceeded, new transactions). Cite each reference. Do not invent due dates." },
+    "entity_business_description": { "max_words": 150, "instruction": "Describe what the entity does using role, key_functions and the approved FAR." },
+    "management_structure": { "max_words": 90, "instruction": "Describe reporting lines to the parent as evidenced by the FAR (e.g. pricing and marketing decided by HQ). If unknown, use the consultant-to-confirm placeholder." },
+    "restructurings": { "max_words": 90, "instruction": "Describe any new transactions or changes in the year (transactions whose first_year equals the fiscal year), especially intangibles. State 'None identified' if there are none." },
+    "group_overview": { "max_words": 110, "instruction": "Describe the group's structure and each entity's role in one short paragraph." },
+    "industry_analysis": { "max_words": 220, "instruction": "Describe the industry and market in which the entity operates. Use only information in the context (and retrieved sources, if provided with URLs). Otherwise write a neutral description flagged '[Consultant to confirm]'." },
+    "value_drivers": { "max_words": 120, "instruction": "Identify the main value drivers (technology, brand, customer relationships, manufacturing) and which entity owns or controls each, per the FAR." },
+    "tested_transaction_description": { "max_words": 150, "instruction": "Describe the tested transaction: parties, flow of goods or services, pricing mechanism, and amounts." },
+    "intercompany_agreements": { "max_words": 110, "instruction": "State which transactions are covered by written agreements and which are not, and why missing agreements matter (cite the rule reference)." },
+    "functions_narrative": { "max_words": 160, "instruction": "Narrate the functions table: what the tested party does and what the parent controls." },
+    "assets_narrative": { "max_words": 110, "instruction": "Describe tangible and intangible assets employed by the tested party versus the parent." },
+    "risks_narrative": { "max_words": 170, "instruction": "Apply the six-step risk framework to the key risks, concluding which party controls and bears each." },
+    "characterisation": { "max_words": 110, "instruction": "Conclude the entity's characterisation (e.g. limited-risk distributor) and the expected profile of returns." },
+    "method_selection": { "max_words": 150, "instruction": "Explain why TNMM is the most appropriate method, referencing the methods table. Mention the US CPM equivalent." },
+    "tested_party_selection": { "max_words": 100, "instruction": "Explain why this entity is the tested party (least complex, no unique intangibles)." },
+    "pli_selection": { "max_words": 100, "instruction": "Explain why the chosen PLI fits the entity's functions (operating margin for distributors; net cost plus for service providers)." },
+    "search_strategy": { "max_words": 110, "instruction": "Describe the search and screening approach and the independence and loss criteria. Note that the candidate set is illustrative." },
+    "range_interpretation": { "max_words": 90, "instruction": "Explain the interquartile range and why the median is the adjustment point under this analysis." },
+    "results_comparison": { "max_words": 140, "instruction": "Compare the tested party's weighted and current-year results with the range, and explain the drivers of any deviation using FAR flags and triggers (e.g. a new royalty)." },
+    "conclusion": { "max_words": 120, "instruction": "State the arm's length conclusion and the recommended adjustment. Do not introduce new numbers." },
+    "recommendations": { "max_words": 170, "instruction": "Turn the triggers into prioritised, concrete actions (e.g. draft the licence agreement, year-end true-up), each with its reference." },
+    "assumptions_limitations": { "max_words": 140, "instruction": "List assumptions and limitations: illustrative data and thresholds, AI-assisted drafting with consultant approval, and items marked for confirmation." }
+  }
+}
