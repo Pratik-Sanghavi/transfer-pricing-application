@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tp-copilot-backend
+  labels:
+    app.kubernetes.io/name: tp-copilot-backend
+    app.kubernetes.io/part-of: transfer-pricing-copilot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: tp-copilot-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: tp-copilot-backend
+        app.kubernetes.io/part-of: transfer-pricing-copilot
+    spec:
+      containers:
+        - name: api
+          image: localhost:5000/transfer-pricing/backend:0.1.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8000
+          env:
+            - name: NEO4J_URI
+              value: bolt://neo4j.graphdb-ns-1.svc.cluster.local:7687
+            - name: NEO4J_DATABASE
+              value: neo4j
+            - name: NEO4J_AUTH_ENABLED
+              value: "false"
+            - name: CORS_ORIGINS
+              value: http://localhost:3000,http://localhost:8501
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tp-copilot-backend
+  labels:
+    app.kubernetes.io/name: tp-copilot-backend
+spec:
+  type: LoadBalancer
+  selector:
+    app.kubernetes.io/name: tp-copilot-backend
+  ports:
+    - name: http
+      port: 8000
+      targetPort: http
