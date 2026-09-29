@@ -1,11 +1,12 @@
 from contextlib import asynccontextmanager
+import json
 from datetime import datetime, timezone
 from uuid import uuid4
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import Settings, get_settings
 from app.database import Neo4jRepository
-from app.schemas import BenchmarkRequest, FarAIRequest, FarUpdate, ReportAIRequest, ReportRequest, ScreenAIRequest
+from app.schemas import AuditEventCreate, BenchmarkRequest, FarAIRequest, FarUpdate, ReportAIRequest, ReportRequest, ScreenAIRequest
 from app.services.openrouter import far as ai_far, report as ai_report, screen as ai_screen
 from app.services.benchmark import calculate_range
 
@@ -52,6 +53,52 @@ def group_graph(repo: Neo4jRepository = Depends(repository)):
     finally:
         repo.close()
 
+
+@app.get("/api/v1/audit-events")
+def list_audit_events(repo: Neo4jRepository = Depends(repository)):
+    try:
+        rows = repo.query("""
+            MATCH (audit:AuditEvent)
+            OPTIONAL MATCH (audit)-[:RELATES_TO]->(target)
+            RETURN audit.id AS id, coalesce(audit.created_at, "") AS time,
+                   coalesce(audit.step, audit.action, "Audit event") AS step,
+                   coalesce(audit.entity_id, target.entity_id, "GROUP") AS entity,
+                   coalesce(audit.detail, "") AS detail, audit.ai_json AS ai_json,
+                   audit.human_json AS human_json
+            ORDER BY time ASC
+        """)
+        for row in rows:
+            row["ai"] = json.loads(row.pop("ai_json")) if row.get("ai_json") else None
+            row["human"] = json.loads(row.pop("human_json")) if row.get("human_json") else None
+        return rows
+    finally:
+        repo.close()
+
+
+@app.post("/api/v1/audit-events")
+def create_audit_event(event: AuditEventCreate, repo: Neo4jRepository = Depends(repository)):
+    try:
+        event_id, created_at = str(uuid4()), datetime.now(timezone.utc).isoformat()
+        rows = repo.query("""
+            CREATE (audit:AuditEvent {id:$id, step:$step, entity_id:$entity, detail:$detail,
+                                      ai_json:$ai_json, human_json:$human_json, created_at:$created_at})
+            WITH audit
+            OPTIONAL MATCH (entity:LegalEntity {entity_id:$entity_id})
+            FOREACH (_ IN CASE WHEN entity IS NULL THEN [] ELSE [1] END |
+                CREATE (audit)-[:RELATES_TO]->(entity))
+            RETURN audit.id AS id, audit.created_at AS time, audit.step AS step,
+                   audit.entity_id AS entity, audit.detail AS detail,
+                   audit.ai_json AS ai_json, audit.human_json AS human_json
+        """, {"id": event_id, "step": event.step, "entity": event.entity, "entity_id": event.entity,
+               "detail": event.detail, "ai_json": json.dumps(event.ai) if event.ai is not None else None,
+               "human_json": json.dumps(event.human) if event.human is not None else None,
+               "created_at": created_at})
+        row = rows[0]
+        row["ai"] = json.loads(row.pop("ai_json")) if row.get("ai_json") else None
+        row["human"] = json.loads(row.pop("human_json")) if row.get("human_json") else None
+        return row
+    finally:
+        repo.close()
 
 @app.get("/api/v1/ai/status")
 def ai_status(settings: Settings = Depends(get_settings)):

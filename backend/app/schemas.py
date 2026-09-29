@@ -36,3 +36,9 @@ class ScreenAIRequest(BaseModel):
 
 class ReportAIRequest(BaseModel):
     ctx: dict[str, Any]
+class AuditEventCreate(BaseModel):
+    step: str
+    entity: str = "GROUP"
+    detail: str
+    ai: Any | None = None
+    human: Any | None = None

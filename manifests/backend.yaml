@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: kind-registry:5000/transfer-pricing/backend:0.1.2
+          image: kind-registry:5000/transfer-pricing/backend:0.1.3
           imagePullPolicy: Always
           ports:
             - name: http

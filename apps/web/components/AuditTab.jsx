@@ -6,7 +6,7 @@ export default function AuditTab({ audit }) {
       <h2>Audit trail: what the AI proposed vs. what the consultant decided</h2>
       {!audit.length && <p className="muted">No actions yet.</p>}
       {[...audit].reverse().map((a, i) => (
-        <details key={i} className="trig">
+        <details key={a.id || i} className="trig">
           <summary>
             <span className="small muted">{a.time}</span>
             <span><b>{a.step}</b> · {a.entity} · {a.detail}</span>

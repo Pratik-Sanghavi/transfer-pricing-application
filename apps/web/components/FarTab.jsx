@@ -8,6 +8,7 @@ export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }
   const [drafts, setDrafts] = useState({});
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState(null);
+  const [rejectionReason, setRejectionReason] = useState("");
   const ent = ents[eid];
   const transcript = transcripts[eid] || "";
 
@@ -25,6 +26,12 @@ export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }
       log("FAR extraction", eid, `AI proposed FAR (${source})`, result);
     } catch (e) { setMsg({ tone: "err", text: e.message }); }
     setBusy(false);
+  }
+
+  function reject() {
+    const reason = rejectionReason.trim() || "Consultant rejected the FAR proposal; revision required.";
+    log("FAR rejected", eid, reason, farAi[eid], { rejection_reason: reason });
+    setMsg({ tone: "err", text: "FAR rejected and recorded in the Neo4j audit trail." });
   }
 
   function approve() {
@@ -80,6 +87,8 @@ export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }
           <textarea className="mono" rows={18} value={drafts[eid] || ""} onChange={(e) => setDrafts({ ...drafts, [eid]: e.target.value })} />
           <div className="row" style={{ marginTop: 10 }}>
             <button className="btn primary" onClick={approve}>Approve FAR</button>
+            <button className="btn" onClick={reject}>Reject FAR</button>
+            <input value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} placeholder="Optional rejection reason" style={{ flex: 1, minWidth: 220 }} />
           </div>
         </div>
       )}
