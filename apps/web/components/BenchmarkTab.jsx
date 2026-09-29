@@ -21,7 +21,7 @@ export async function screenEntity({ data, ents, far, eid }) {
   return { rows, source };
 }
 
-export default function BenchmarkTab({ data, ents, far, screening, setScreening, accepted, log }) {
+export default function BenchmarkTab({ data, ents, far, screening, setScreening, accepted, log, persist }) {
   const [eid, setEid] = useState("E02");
   const [busy, setBusy] = useState(false);
   const { compKey, pli } = BENCHMARKS[eid];
@@ -34,6 +34,7 @@ export default function BenchmarkTab({ data, ents, far, screening, setScreening,
     try {
       const { rows, source } = await screenEntity({ data, ents, far, eid });
       setScreening((s) => ({ ...s, [eid]: rows }));
+      persist("screening", { eid, rows });
       log("Comp screening", eid, `AI screened ${rows.length} comps, rejected ${rows.filter((r) => !r.accept).length} (${source})`);
     } catch (e) { alert(e.message); }
     setBusy(false);
@@ -43,6 +44,7 @@ export default function BenchmarkTab({ data, ents, far, screening, setScreening,
     const next = rows.map((r) => (r.comp_id === cid ? { ...r, accept: !r.accept } : r));
     const r = next.find((x) => x.comp_id === cid);
     setScreening((s) => ({ ...s, [eid]: next }));
+    persist("screening", { eid, rows: next });
     log("Screening override", eid, `${cid}: AI said ${r.ai_decision}, consultant set ${r.accept ? "Accept" : "Reject"}`);
   }
 

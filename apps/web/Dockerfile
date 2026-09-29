@@ -3,7 +3,10 @@ FROM node:22-alpine AS build
 WORKDIR /repo
 COPY package.json package-lock.json ./
 COPY apps/web/package.json apps/web/
-RUN npm ci -w apps/web
+COPY packages/core/package.json packages/core/
+COPY packages/graph/package.json packages/graph/
+RUN npm ci
+COPY packages packages
 COPY apps/web apps/web
 RUN npm run build -w apps/web
 

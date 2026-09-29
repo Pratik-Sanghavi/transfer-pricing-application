@@ -17,7 +17,7 @@ spec:
           ports: [{ containerPort: 3000 }]
           envFrom:
             - configMapRef: { name: tp-copilot-config }
-            - secretRef: { name: tp-copilot-secrets, optional: true }  # holds OPENROUTER_API_KEY; app runs in demo mode without it
+            - secretRef: { name: tp-copilot-secrets, optional: true }  # NEO4J_PASSWORD, OPENROUTER_API_KEY
           readinessProbe:
             httpGet: { path: /, port: 3000 }
             initialDelaySeconds: 5

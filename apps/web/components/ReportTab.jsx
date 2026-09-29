@@ -5,7 +5,7 @@ import { BENCHMARKS, CURRENT_YEAR, benchmark, runAll } from "@/lib/rules";
 import { post } from "./App";
 import { screenEntity } from "./BenchmarkTab";
 
-export default function ReportTab({ data, ents, far, screening, setScreening, accepted, report, setReport, log }) {
+export default function ReportTab({ data, ents, far, screening, setScreening, accepted, report, setReport, log, persist }) {
   const [eid, setEid] = useState("E05");
   const [busy, setBusy] = useState(false);
   const missing = [!far[eid] && "approve the FAR", !screening[eid] && "screen comparables"].filter(Boolean);
@@ -17,6 +17,7 @@ export default function ReportTab({ data, ents, far, screening, setScreening, ac
       if (!rows) {
         ({ rows } = await screenEntity({ data, ents, far, eid }));
         setScreening((s) => ({ ...s, [eid]: rows }));
+        persist("screening", { eid, rows });
         acc = { ...accepted, [eid]: rows.filter((r) => r.accept).map((r) => r.comp_id) };
       }
       const ctx = {
@@ -27,6 +28,7 @@ export default function ReportTab({ data, ents, far, screening, setScreening, ac
       };
       const { result, source } = await post("/api/report", { ctx });
       setReport((r) => ({ ...r, [eid]: { text: result, source } }));
+      persist("report", { eid, text: result, source });
       log("Report draft", eid, `Generated local file section (${source})`);
     } catch (e) { alert(e.message); }
     setBusy(false);

@@ -1,0 +1,15 @@
+{
+  "name": "@tp/graph",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./csv": "./src/csv.js"
+  },
+  "scripts": { "seed": "node src/seed-cli.js" },
+  "dependencies": {
+    "@tp/core": "*",
+    "neo4j-driver": "^6.0.0"
+  }
+}

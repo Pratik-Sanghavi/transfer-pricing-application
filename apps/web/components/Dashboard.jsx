@@ -13,7 +13,7 @@ export function Kpi({ label, value, delta, tone }) {
   );
 }
 
-export default function Dashboard({ data, ents, accepted }) {
+export default function Dashboard({ data, ents, accepted, persistence }) {
   const [wiEnt, setWiEnt] = useState("");
   const [wiDelta, setWiDelta] = useState(0);
   const [filter, setFilter] = useState("");
@@ -100,6 +100,15 @@ export default function Dashboard({ data, ents, accepted }) {
               <p>{t.detail}</p>
               <p><b>Action:</b> {t.action}</p>
               <p className="ref">Why: {t.rule_id} · {t.jurisdiction} · {t.reference}</p>
+              {persistence?.mode === "neo4j" && (
+                <p className="small muted" style={{ fontFamily: "ui-monospace, monospace" }}>
+                  Neo4j: {t.metrics.txn_id
+                    ? `(:Transaction {txn_id:'${t.metrics.txn_id}'})-[:TRIGGERS]->(:Rule {rule_id:'${t.rule_id}'})`
+                    : t.entity_id === "GROUP"
+                      ? `(:Case)-[:FLAGGED_BY]->(:Rule {rule_id:'${t.rule_id}'})`
+                      : `(:LegalEntity {entity_id:'${t.entity_id}'})-[:FLAGGED_BY]->(:Rule {rule_id:'${t.rule_id}'})`}
+                </p>
+              )}
             </details>
           ))}
           </div>

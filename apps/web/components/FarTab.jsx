@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { post } from "./App";
 
-export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }) {
+export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log, persist }) {
   const [eid, setEid] = useState("E05");
   const [transcripts, setTranscripts] = useState({});
   const [drafts, setDrafts] = useState({});
@@ -22,6 +22,7 @@ export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }
       const { result, source } = await post("/api/far", { transcript, entity: ent });
       setFarAi({ ...farAi, [eid]: result });
       setDrafts({ ...drafts, [eid]: JSON.stringify(result, null, 2) });
+      persist("far_proposal", { eid, ai: result });
       log("FAR extraction", eid, `AI proposed FAR (${source})`, result);
     } catch (e) { setMsg({ tone: "err", text: e.message }); }
     setBusy(false);
@@ -32,6 +33,7 @@ export default function FarTab({ data, ents, far, setFar, farAi, setFarAi, log }
       const final = JSON.parse(drafts[eid]);
       const changed = JSON.stringify(final) !== JSON.stringify(farAi[eid]);
       setFar({ ...far, [eid]: final });
+      persist("far_approve", { eid, approved: final });
       log("FAR approval", eid, `Consultant approved${changed ? " with edits" : " as proposed"}`, changed ? farAi[eid] : null, changed ? final : null);
       setMsg({ tone: "ok", text: "FAR approved and locked for benchmarking." });
     } catch (e) { setMsg({ tone: "err", text: `JSON error: ${e.message}` }); }

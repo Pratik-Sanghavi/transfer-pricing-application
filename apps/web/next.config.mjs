@@ -7,4 +7,6 @@ export default {
   output: "standalone",                              // self-contained server for the Docker image
   outputFileTracingRoot: path.join(here, "../.."),   // monorepo root (npm workspaces)
   outputFileTracingIncludes: { "/**": ["./data/**"] },
+  transpilePackages: ["@tp/core", "@tp/graph"],
+  serverExternalPackages: ["neo4j-driver"],
 };
