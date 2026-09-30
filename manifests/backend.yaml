@@ -70,5 +70,5 @@ spec:
     app.kubernetes.io/name: tp-copilot-backend
   ports:
     - name: http
-      port: 8000
+      port: 8001
       targetPort: http

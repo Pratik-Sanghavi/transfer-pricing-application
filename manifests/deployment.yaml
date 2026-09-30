@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: BACKEND_URL
-              value: http://tp-copilot-backend.transfer-pricing.svc.cluster.local:8000
+              value: http://tp-copilot-backend.transfer-pricing.svc.cluster.local:8001
           ports:
             - name: http
               containerPort: 3000
